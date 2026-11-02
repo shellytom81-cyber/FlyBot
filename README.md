@@ -16,7 +16,7 @@ A budget, smartphone-controlled micro-drone prototype powered by an ESP32 microc
 * **Control Interface:** Local Wi-Fi Access Point hosted directly on the ESP32, allowing control via a smartphone web browser or companion app[cite: 1].
 
 ## 🚀 Getting Started
-1. Clone the repository: `git clone https://github.com/YOUR-USERNAME/flybot-micro-drone.git`
+1. Clone the repository: `git clone https://github.com/shellytom81-cyber/flybot-micro-drone.git`
 2. Open the `firmware/flight_controller/flight_controller.ino` file in the Arduino IDE.
 3. Install required ESP32 and MPU-6050 sensor libraries.
 4. Flash the code to your ESP32 board and connect to the drone's local Wi-Fi network from your mobile phone.
