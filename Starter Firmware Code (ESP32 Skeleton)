@@ -1,0 +1,59 @@
+#include <Wire.h>
+#include <MPU6050.h>
+
+MPU6050 mpu;
+
+// Motor Pin Definitions (PWM)
+#define MOTOR_FL 25
+#define MOTOR_FR 26
+#define MOTOR_BL 27
+#define MOTOR_BR 14
+
+// PID Constants (To be tuned for specific frame weights)
+float Kp = 1.2, Ki = 0.01, Kd = 0.5;
+float error_roll, prev_error_roll, integral_roll;
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  
+  // Initialize Gyro
+  mpu.initialize();
+  if (!mpu.testConnection()) {
+    Serial.println("MPU6050 connection failed!");
+    while (1);
+  }
+
+  // Setup PWM Channels for ESP32
+  ledcAttachChannel(MOTOR_FL, 5000, 8, 0);
+  ledcAttachChannel(MOTOR_FR, 5000, 8, 1);
+  ledcAttachChannel(MOTOR_BL, 5000, 8, 2);
+  ledcAttachChannel(MOTOR_BR, 5000, 8, 3);
+}
+
+void loop() {
+  int16_t ax, ay, az, gx, gy, gz;
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+
+  // 1. Calculate orientation error
+  float current_roll = gx / 131.0; // Scaled gyro reading
+  float target_roll = 0.0;         // Hover level
+  error_roll = target_roll - current_roll;
+
+  // 2. PID Calculations
+  integral_roll += error_roll;
+  float derivative_roll = error_roll - prev_error_roll;
+  float output = (Kp * error_roll) + (Ki * integral_roll) + (Kd * derivative_roll);
+  prev_error_roll = error_roll;
+
+  // 3. Apply correction to motor outputs (Base throttle = 150)
+  int base_throttle = 150;
+  int speed_left = constrain(base_throttle + output, 0, 255);
+  int speed_right = constrain(base_throttle - output, 0, 255);
+
+  // Drive PWM
+  ledcWriteChannel(0, speed_left);
+  ledcWriteChannel(1, speed_right);
+
+  delay(10); // ~100Hz Loop Rate
+}
