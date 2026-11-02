@@ -1,0 +1,12 @@
+flybot-micro-drone/
+├── README.md                           # Main project overview & setup guide
+├── docs/
+│   ├── wiring_diagram.png              # Circuit schematic & pin mapping
+│   └── pid_tuning_guide.md             # Guide to tuning PID constants
+├── firmware/
+│   └── flight_controller/
+│       ├── flight_controller.ino       # Main Arduino sketch entry point
+│       ├── config.h                    # Pinouts, Wi-Fi SSID, and PID constants
+│       └── pid.cpp                     # Proportional-Integral-Derivative loop
+└── cad/
+    └── micro_frame_v1.stl              # 3D printable STL for micro frame
