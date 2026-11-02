@@ -1,0 +1,20 @@
++-----------------------------------------------------------+
+|                   Mobile User Interface                   |
+|       (Virtual Joysticks / Web Dashboard hosted on ESP32) |
++-----------------------------------------------------------+
+                              |
+                     [Wi-Fi / WebSockets]
+                              v
++-----------------------------------------------------------+
+|                 ESP32 Flight Controller                   |
+|  - MPU-6050 IMU Data Processing (I2C)                     |
+|  - Real-time PID Stabilization Loop (Roll, Pitch, Yaw)    |
+|  - PWM Motor Output Calculation                           |
++-----------------------------------------------------------+
+                              |
+                         [MOSFETs]
+                              v
++-----------------------------------------------------------+
+|                 Actuators & Propulsion                    |
+|           (4 x Coreless Brushed DC Motors)                |
++-----------------------------------------------------------+
